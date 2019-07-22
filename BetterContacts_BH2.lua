@@ -27,7 +27,7 @@ local function queryOldIndex(self, key)
 end
 
 local function parseKey(self, key)
-  local parsed=load("return function(Zugname) " .. key .. " end")
+  local parsed=load("return function(Zugname) " .. key .. " end", "KP-Eintrag")
   if parsed then
     local myFunction=parsed()
     _ENV[key]=myFunction
