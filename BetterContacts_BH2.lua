@@ -5,29 +5,44 @@ local betterContacts = {
   _LICENSE     = "MIT",
 }
 
+-- local variables, will be filled later
+local queryOldIndex, getNewKey, templateString
+
 betterContacts.options = {
-  
+  replaceCommas = false,
+  varname = "Zugname",
+  chunkname = "KP-Eintrag",
 }
 betterContacts.setOptions = function(newOptions)
-  --TODO
+  if type(newOptions) == "table" then
+    --TODO: set options from newOptions
+  end
+  
+  -- update local variables
+  templateString = "return function(" .. betterContacts.options.varname .. ") %s end"
+  if betterContacts.options.replaceCommas then
+    getNewKey = function(key) return k:gsub("%.",",") end
+  else
+    getNewKey = function(key) return key end
+  end
 end
+betterContacts.setOptions()
 
 local mt = getmetatable(_ENV) or {}
 setmetatable(_ENV, mt)
 
 local oldIndex = mt.__index
-local function queryOldIndex(self, key)
-  if type(oldIndex) == "table" then
-    return oldIndex[key]
-  elseif type(oldIndex) == "function" then
-    return oldIndex(self, key)
-  else
-    return nil
-  end
+if type(oldIndex) == "function" then
+  queryOldIndex = oldIndex
+elseif type(oldIndex) == "table" then
+  queryOldIndex = function(self, key) return oldIndex[key] end
+else
+  queryOldIndex = function(self, key) return nil end
 end
 
 local function parseKey(self, key)
-  local parsed=load("return function(Zugname) " .. key .. " end", "KP-Eintrag")
+  local newKey = getNewKey(key)
+  local parsed=load(string.format(templateString, newKey), betterContacts.options.chunkname)
   if parsed then
     local myFunction=parsed()
     _ENV[key]=myFunction
