@@ -23,14 +23,18 @@ local options = {
 betterContacts.getOptions = function() return options end
 betterContacts.setOptions = function(newOptions)
   if type(newOptions) == "table" then
-    if type(newOptions.replaceCommas) == "boolean" then
-      options.replaceCommas = newOptions.replaceCommas
-    end
-    if type(newOptions.varname) == "string" then
-      options.varname = newOptions.varname
-    end
-    if type(newOptions.chunkname) == "string" then
-      options.chunkname = newOptions.chunkname
+    -- transfer new options to local option table
+    for key, newValue in pairs(newOptions) do
+      local oldType, newType = type(options[key]), type(newValue)
+      if newType == oldType then
+        options[key] = newValue
+      elseif oldType == "nil" then
+        local message = string.format("Unknown option '%s' (with value %s)", key, newValue)
+        error(message, 2)
+      else
+        local message = string.format("Option '%s' must be of type %s, but is of type %s", key, oldType, newType)
+        error(message, 2)
+      end
     end
   end
   
