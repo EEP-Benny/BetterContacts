@@ -31,10 +31,10 @@ betterContacts.setOptions = function(newOptions)
       if newType == oldType then
         options[key] = newValue
       elseif oldType == "nil" then
-        local message = string.format("Unknown option '%s' (with value %s)", key, newValue)
+        local message = string.format("Unbekannte Option '%s' (mit dem Wert %s)", key, newValue)
         error(message, 2)
       else
-        local message = string.format("Option '%s' must be of type %s, but is of type %s", key, oldType, newType)
+        local message = string.format("Die Option '%s' muss vom Typ %s sein, aber ist vom Typ %s", key, oldType, newType)
         error(message, 2)
       end
     end
