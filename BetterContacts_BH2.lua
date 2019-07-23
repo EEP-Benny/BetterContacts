@@ -53,6 +53,11 @@ else
 end
 
 local function parseKey(self, key)
+  if not string.find(key, "[^%w_]") then
+    -- skip keys which only contain letters, numbers and underscores
+    -- (those can be variable names, but not valid expressions)
+    return nil
+  end
   local newKey = getNewKey(key)
   local parsed=load(string.format(templateString, newKey), options.chunkname)
   if parsed then
