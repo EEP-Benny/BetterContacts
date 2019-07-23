@@ -16,6 +16,7 @@ local function replaceCommas(key)
 end
 
 local options = {
+  printErrors = false,
   replaceCommas = false,
   varname = "Zugname",
   chunkname = "KP-Eintrag",
@@ -60,14 +61,17 @@ local function parseKey(self, key)
   if not string.find(key, "[^%w_]") then
     -- skip keys which only contain letters, numbers and underscores
     -- (those can be variable names, but not valid expressions)
+    -- otherwise, we would get a "syntax error" for each missing global variables
     return nil
   end
   local newKey = getNewKey(key)
-  local parsed=load(string.format(templateString, newKey), options.chunkname)
+  local parsed, message = load(string.format(templateString, newKey), options.chunkname)
   if parsed then
     local myFunction=parsed()
     _ENV[key]=myFunction
     return myFunction
+  elseif options.printErrors then
+    print(message)
   end
   return nil
 end
