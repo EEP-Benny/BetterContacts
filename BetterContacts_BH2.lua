@@ -8,25 +8,37 @@ local betterContacts = {
 -- local variables, will be filled later
 local queryOldIndex, getNewKey, templateString
 
-betterContacts.options = {
+local function doNothing(key)
+  return key
+end
+local function replaceCommas(key)
+  return string.gsub(key, "%.", ",")
+end
+
+local options = {
   replaceCommas = false,
   varname = "Zugname",
   chunkname = "KP-Eintrag",
 }
+betterContacts.getOptions = function() return options end
 betterContacts.setOptions = function(newOptions)
   if type(newOptions) == "table" then
-    --TODO: set options from newOptions
+    if type(newOptions.replaceCommas) == "boolean" then
+      options.replaceCommas = newOptions.replaceCommas
+    end
+    if type(newOptions.varname) == "string" then
+      options.varname = newOptions.varname
+    end
+    if type(newOptions.chunkname) == "string" then
+      options.chunkname = newOptions.chunkname
+    end
   end
   
   -- update local variables
-  templateString = "return function(" .. betterContacts.options.varname .. ") %s end"
-  if betterContacts.options.replaceCommas then
-    getNewKey = function(key) return k:gsub("%.",",") end
-  else
-    getNewKey = function(key) return key end
-  end
+  getNewKey = options.replaceCommas and replaceCommas or doNothing
+  templateString = "return function(" .. options.varname .. ") %s end"
 end
-betterContacts.setOptions()
+betterContacts.setOptions() -- initialize local variables from default options
 
 local mt = getmetatable(_ENV) or {}
 setmetatable(_ENV, mt)
@@ -42,7 +54,7 @@ end
 
 local function parseKey(self, key)
   local newKey = getNewKey(key)
-  local parsed=load(string.format(templateString, newKey), betterContacts.options.chunkname)
+  local parsed=load(string.format(templateString, newKey), options.chunkname)
   if parsed then
     local myFunction=parsed()
     _ENV[key]=myFunction
