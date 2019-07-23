@@ -8,16 +8,16 @@ local betterContacts = {
 -- local variables, will be filled later
 local queryOldIndex, getNewKey, templateString
 
-local function doNothing(key)
+local function passThrough(key)
   return key
 end
-local function replaceCommas(key)
+local function replaceDots(key)
   return string.gsub(key, "%.", ",")
 end
 
 local options = {
   printErrors = false,
-  replaceCommas = false,
+  replaceDots = false,
   varname = "Zugname",
   chunkname = "KP-Eintrag",
 }
@@ -26,7 +26,8 @@ betterContacts.setOptions = function(newOptions)
   if type(newOptions) == "table" then
     -- transfer new options to local option table
     for key, newValue in pairs(newOptions) do
-      local oldType, newType = type(options[key]), type(newValue)
+      local oldType = type(options[key])
+      local newType = type(newValue)
       if newType == oldType then
         options[key] = newValue
       elseif oldType == "nil" then
@@ -40,7 +41,7 @@ betterContacts.setOptions = function(newOptions)
   end
   
   -- update local variables
-  getNewKey = options.replaceCommas and replaceCommas or doNothing
+  getNewKey = options.replaceDots and replaceDots or passThrough
   templateString = "return function(" .. options.varname .. ") %s end"
 end
 betterContacts.setOptions() -- initialize local variables from default options
@@ -67,8 +68,8 @@ local function parseKey(self, key)
   local newKey = getNewKey(key)
   local parsed, message = load(string.format(templateString, newKey), options.chunkname)
   if parsed then
-    local myFunction=parsed()
-    _ENV[key]=myFunction
+    local myFunction = parsed()
+    _ENV[key] = myFunction
     return myFunction
   elseif options.printErrors then
     print(message)
