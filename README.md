@@ -3,7 +3,7 @@
 `BetterContacts` macht Kontaktpunkte besser: In das Eingabefeld für Lua-Aufrufe können nun auch Funktionsparameter eingegeben werden.
 `BetterContacts` ist der Nachfolger meiner berühmten „Codezeile“, die die selbe Funktion hatte. Die Auslagerung in ein separates Modul macht den Code übersichtlicher und fasst mehrere Varianten der ursprünglichen Codezeile zusammen.
 
-### Schnellstart-Anleitung
+### Schnellstartanleitung
 
 #### 1. Installieren
 
@@ -36,16 +36,13 @@ Jetzt kannst du beliebige Lua-Befehle in die Kontaktpunkte schreiben, insbesonde
 
 ##### Beispiele für Kontaktpunkt-Einträge
 
-- Der folgende Eintrag schreibt den Namen des Zuges mittels `print` ins Ereignisfenster:
-  ```lua
-  print("Der Kontaktpunkt wurde vom Zug ", Zugname, " ausgelöst!")
-  ```
+- `print("Der Kontaktpunkt wurde vom Zug ", Zugname, " ausgelöst!")`  
+  &rarr; Schreibt den Namen des Zuges mittels `print` ins Ereignisfenster.
+- `ZugAusDepot(2)`  
+  &rarr; Ruft den nächsten Zug aus dem Depot 2 ab (sofern eine entsprechende `function ZugAusDepot(depotNummer)` im Skript definiert ist).
+- `RegistriereZugAnSignal(Zugname, 1234)`  
+  &rarr; Registriert den Zug für Signal 1234 (sofern eine entsprechende `function RegistriereZugAnSignal(zugname, signalId)` im Skript definiert ist).
 
-* Der folgende Eintrag ruft den nächsten Zug aus dem Depot 2 ab (sofern du eine entsprechende `function ZugAusDepot(depotNummer)` im Skript definiert hast):
-  ```lua
-  ZugAusDepot(2)
-  ```
-* Der folgende Eintrag registriert den Zug für Signal 1234 (sofern du eine entsprechende `function RegistriereZugAnSignal(zugname, signalId)` im Skript definiert hast):
-  ```lua
-  RegistriereZugAnSignal(Zugname, 1234)
-  ```
+### Changelog
+
+Siehe [EMAPS](http://emaps-eep.de/lua/bettercontacts) oder [GitHub-Release-Seite](https://github.com/EEP-Benny/BetterContacts/releases).
