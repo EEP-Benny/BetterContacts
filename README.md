@@ -67,8 +67,9 @@ Dabei werden die folgenden Parameter unterstützt:
 - ⚠️ `replaceDots`: `true` oder `false` (Standardwert). Dies ist für EEP 10 nötig, da bei dieser Version fälschlicherweise alle in das Eingabefeld eingegebenen Kommas in Punkte umgewandelt werden. Wenn `replaceDots` auf `true` gesetzt ist, werden alle Punkte wieder in Kommas zurückverwandelt. Somit ist es möglich, mehrere (durch Komma getrennte) Parameter an eine Funktion zu übergeben. Leider werden damit auch gewollte Punkte durch Kommas ersetzt, sodass eine Dezimalzahl (z.B. `10.2`) als zwei Parameter `10, 2` interpretiert wird. Ab EEP 11(?) ist die fälschliche Komma-durch-Punkt-Ersetzung behoben, sodass diese Option nicht mehr benötigt wird (sofern es in der Anlage nicht noch alte Kontaktpunkte mit falschen Punkten gibt).
 - `preventReturn0`: `true` (Standardwert) oder `false`. Wenn `true`, wird ein `return 0` in der EEPMain abgefangen und stattdessen `1` zurückgegeben. Dieser Eingriff wird mit einer Warnung im Ereignisfenster kommentiert.  
   Eine kurze Erklärung dazu: Wird die `EEPMain` einmal mit `return 0` beendet, wird sie anschließend von EEP nicht mehr erneut aufgerufen. Das ist das gewollte Verhalten (wobei mir kein sinnvoller Anwendungsfall dafür einfällt). Es gibt aber auch eine ungewollte Konsequenz: Wenn du nun einen Kontaktpunkt-Dialog mit „komplexem“ Lua-Eintrag (der von BetterContacts behandelt werden muss) per Klick auf OK schließen willst, hängt sich EEP komplett auf, und alle ungespeicherten Änderungen sind verloren. Die Option `preventReturn0` versucht dies zu verhindern. Wenn du dir sicher bist, dass deine `EEPMain` niemals mit `return 0` beendet wird, kannst du dieses Sicherheitsfeature auf eigene Gefahr abschalten.
+- ⚠️👎 `deprecatedUseGlobal`: `true` oder `false` (Standardwert). Wenn `true`, wird der Zugname zusätzlich in einer globalen Variable namens `Zugname` bereitgestellt, die Option `varname` hat dann keinen Effekt mehr. Die Option `deprecatedUseGlobal` gibt es nur aus Kompatibilitätsgründen zu meiner bisherigen Codezeile. Ich rate dringend davon ab, sie zu verwenden (deshalb 👎).
 
-**Achtung:** Die mit ⚠️ markierten Parameter `varname` und `replaceDots` können nicht nach Belieben geändert werden, sondern müssen zu den tatsächlichen Einträgen in den Kontaktpunkten auf der Anlage passen.
+**Achtung:** Die mit ⚠️ markierten Parameter `varname`, `replaceDots` und `deprecatedUseGlobal` können nicht nach Belieben geändert werden, sondern müssen zu den tatsächlichen Einträgen in den Kontaktpunkten auf der Anlage passen.
 
 _Unwichtiger Hinweis:_ Bei der oben angegebenen `require`-Zeile handelt es sich um eine Kurzschreibweise, die dank verschiedener technischer Kniffe möglich ist. Die folgende Langversion (mit `.setOptions`, Klammern und Zeilenumbrüchen) macht genau das gleiche:
 
@@ -104,7 +105,7 @@ Falls du bisher eine der Varianten des Codeschnipsels mit Punkt-Komma-Ersetzung 
 require("BetterContacts_BH2"){replaceDots=true}
 ```
 
-**Aber Achtung!** Es gibt einen Breaking Change, also eine Änderung, die zu Fehlern in deinem Code führen kann: Im Codeschnipsel wurde `Zugname` als globale Variable gesetzt, und stand damit während des Kontaktpunkt-Aufrufs im gesamten Skript zur Verfügung. In BetterContacts ist `Zugname` eine lokale Variable, die nur direkt innerhalb des Kontaktpunkt-Eintrags zur Verfügung steht (um von dort als Funktionsparameter weitergegeben zu werden).
+**Aber Achtung!** In der Standardkonfiguration gibt es einen Breaking Change, also eine Änderung, die zu Fehlern in deinem Code führen kann: Im Codeschnipsel wurde `Zugname` als globale Variable gesetzt, und stand damit während des Kontaktpunkt-Aufrufs im gesamten Skript zur Verfügung. In BetterContacts ist `Zugname` eine lokale Variable, die nur direkt innerhalb des Kontaktpunkt-Eintrags zur Verfügung steht (um von dort als Funktionsparameter weitergegeben zu werden).
 
 Der folgende Code hat bisher funktioniert und wird auch weiterhin funktionieren:
 
@@ -119,7 +120,7 @@ myFunc(Zugname)
 
 Dabei ist es egal, ob die lokale Variable `_zugname`, `Zugname` oder noch anders heißt.
 
-Der folgende Code hat mit dem Codeschnipsel (leider) funktioniert, wird mit BetterContacts aber nicht mehr funktionieren:
+Der folgende Code hat mit dem Codeschnipsel (leider) funktioniert, wird mit BetterContacts aber nicht mehr ohne weiteres funktionieren:
 
 ```lua
 function myFunc()
@@ -130,7 +131,9 @@ end
 myFunc()
 ```
 
-Ich hatte nie vorgesehen, dass `Zugname` als globale Variable verwendet wird, aber leider haben es doch einige Leute gemacht. Falls du dazugehörst, ist es jetzt eine gute Gelegenheit, dein Skript (und die Einträge in den Kontaktpunkten) entsprechend umzustellen. Falls du dabei Hilfe benötigst, frage am besten im [EEP-Forum](https://www.eepforum.de/) nach.
+Ich hatte nie vorgesehen, dass `Zugname` als globale Variable verwendet wird, aber leider haben es doch einige Leute gemacht. Damit auch diese Leute auf BetterContacts umsteigen können, gibt es die Option `deprecatedUseGlobal`. Wenn diese Option auf `true` gesetzt ist, wird der Zugname (genau wie bisher) als globale Variable bereitgestellt. Ich rate von der Verwendung aber heftig ab, weil mit globalen Variablen leicht Fehler entstehen können, die nur sehr schwer zu finden sind.
+
+Wenn du `Zugname` bisher als globale Variable verwendet hast, wäre es jetzt eine gute Gelegenheit, dein Skript (und die Einträge in den Kontaktpunkten) entsprechend umzustellen. Falls du dabei Hilfe benötigst, frage am besten im [EEP-Forum](https://www.eepforum.de/) nach.
 
 ### Technische Details
 

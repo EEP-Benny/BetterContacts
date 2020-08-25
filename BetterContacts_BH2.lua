@@ -21,6 +21,7 @@ local options = {
   varname = "Zugname",
   chunkname = "KP-Eintrag",
   preventReturn0 = true,
+  deprecatedUseGlobal = false,
 }
 betterContacts.getOptions = function() return options end
 betterContacts.setOptions = function(newOptions)
@@ -43,7 +44,12 @@ betterContacts.setOptions = function(newOptions)
   
   -- update local variables
   getNewKey = options.replaceDots and replaceDots or passThrough
-  templateString = "return function(" .. options.varname .. ") %s end"
+  if options.deprecatedUseGlobal then
+    -- local function p is neccessary to prevent shadowing of variables z and s
+    templateString = "local p=function() %s end;return function(z) local s=Zugname;Zugname=z;p();Zugname=s end;"
+  else
+    templateString = "return function(" .. options.varname .. ") %s end"
+  end
 end
 betterContacts.setOptions() -- initialize local variables from default options
 
