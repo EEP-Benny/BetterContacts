@@ -34,10 +34,14 @@ Schalte in den 3D-Modus, sodass Lua einmal ausgeführt wird.
 
 Jetzt kannst du beliebige Lua-Befehle in die Kontaktpunkte schreiben, insbesondere auch Funktionsaufrufe mit Parametern. Der Name des aktuellen Zugs steht dabei in der Variablen `Zugname` zur Verfügung.
 
+![Screenshot des Kontaktpunktdialogs mit hervorgehobener Lua-Funktion](BetterContacts_KP-Fenster.png)
+
 ##### Beispiele für Kontaktpunkt-Einträge
 
 - `print("Der Kontaktpunkt wurde vom Zug ", Zugname, " ausgelöst")`  
   &rarr; Schreibt den Namen des Zuges mittels `print` ins Ereignisfenster.
+- `EEPSetSignal(3, 2, 1)`  
+  &rarr; Schaltet das Signal mit der Signal-ID 3 in die zweite Stellung (und ruft die Callback-Funktion auf, sofern eine definiert ist). Zugegeben, das könnte man auch mit einem normalen Signal-Kontaktpunkt erreichen...
 - `ZugAusDepot(2)`  
   &rarr; Ruft den nächsten Zug aus dem Depot 2 ab (sofern eine entsprechende `function ZugAusDepot(depotNummer)` im Skript definiert ist).
 - `RegistriereZugAnSignal(Zugname, 1234)`  
@@ -175,7 +179,7 @@ end
   end
   ```
 - Dieser String wird nun an die Lua-Funktion `load` übergeben. `load` macht aus einem beliebigen String ausführbaren Code, und gibt eine Funktion zurück, die hier in der Variable `parsed` gespeichert wird. Sobald diese Funktion aufgerufen wird, wird der entsprechenden Code einmal ausgeführt. Falls der übergebene Code einen Syntaxfehler enthält, wird stattdessen `nil` zurückgegeben. Als zweiten Rückgabewert gibt es dann noch zusätzlich eine Fehlermeldung, die hier in der Variable `message` gespeichert wird.
-- Falls `parsed` nicht `nil` ist (also wenn es sich um eine gültige Funktion handelt), wird die Funktion einmal ausgeführt. Diese Funktion (weil mit `return funtion(Zugname)...` definiert) gibt eine neue Funktion zurück, die in der Variablen `myFunction` gespeichert wird. Diese neue Funktion erwartet einen Parameter (den Zugnamen), und führt dann den Code aus, der im Kontaktpunkt eingetragen wurde (wobei der Zugname in einer lokalen Variable zur Verfügung steht). Diese Funktion `myFunction` wird nun einerseits als globale Variable gespeichert (damit die ganze Berechnung bei erneutem Überfahren des selben Kontaktpunkts nicht nochmal wiederholt werden muss), und andererseits zurückgegeben.
+- Falls `parsed` nicht `nil` ist (also wenn es sich um eine gültige Funktion handelt), wird die Funktion einmal ausgeführt. Diese Funktion (weil mit `return function(Zugname) ...` definiert) gibt eine neue Funktion zurück, die in der Variablen `myFunction` gespeichert wird. Diese neue Funktion erwartet einen Parameter (den Zugnamen), und führt dann den Code aus, der im Kontaktpunkt eingetragen wurde (wobei der Zugname in einer lokalen Variable zur Verfügung steht). Diese Funktion `myFunction` wird nun einerseits als globale Variable gespeichert (damit die ganze Berechnung bei erneutem Überfahren des selben Kontaktpunkts nicht nochmal wiederholt werden muss), und andererseits zurückgegeben.
 - Falls es einen Syntaxfehler gab, wird die entsprechende Fehlermeldung mittels `print(message)` ins Ereignisfenster geschrieben (zumindest dann, wenn die Option `printErrors` aktiviert wurde).
 - Sofern die Funktion `parseKey` nicht schon vorher mittels `return myFunction` verlassen wurde, wird abschließend explizit `nil` zurückgegeben. Das bedeutet so viel wie: „Mit diesem Variablennamen kann ich auch nichts anfangen.“
 
