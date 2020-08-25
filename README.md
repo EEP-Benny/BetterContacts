@@ -26,7 +26,7 @@ Leider enthält das Standardskript ab EEP16 ein `return 0`. Falls noch nicht ges
     if (I>9) then return 0 end
 ```
 
-_Falls du das vergisst, erscheint eine Fehlermeldung im Ereignisfenster sowie 3D-Fenster und es wird ein Warnton abgespielt._
+_Falls du das vergisst, wird BetterContacts eine Warnung ins Ereignisfenster schreiben_
 
 #### 3. Aktivieren
 
@@ -65,6 +65,8 @@ Dabei werden die folgenden Parameter unterstützt:
 - `printErrors`: `true` oder `false` (Standardwert). Wenn `true`, wird bei Syntaxfehlern eine entsprechende Meldung im Ereignisfenster ausgegeben, die beim Fehlersuchen helfen kann (siehe [unten](#Fehlersuche)).
 - `chunkname`: Ein beliebiger String (standardmäßig `"KP-Eintrag"`). Dieser wird als _Chunkname_ an Lua übergeben und taucht in Fehlermeldungen auf. Die Funktionalität wird durch diesen Parameter nicht verändert.
 - ⚠️ `replaceDots`: `true` oder `false` (Standardwert). Dies ist für EEP 10 nötig, da bei dieser Version fälschlicherweise alle in das Eingabefeld eingegebenen Kommas in Punkte umgewandelt werden. Wenn `replaceDots` auf `true` gesetzt ist, werden alle Punkte wieder in Kommas zurückverwandelt. Somit ist es möglich, mehrere (durch Komma getrennte) Parameter an eine Funktion zu übergeben. Leider werden damit auch gewollte Punkte durch Kommas ersetzt, sodass eine Dezimalzahl (z.B. `10.2`) als zwei Parameter `10, 2` interpretiert wird. Ab EEP 11(?) ist die fälschliche Komma-durch-Punkt-Ersetzung behoben, sodass diese Option nicht mehr benötigt wird (sofern es in der Anlage nicht noch alte Kontaktpunkte mit falschen Punkten gibt).
+- `preventReturn0`: `true` (Standardwert) oder `false`. Wenn `true`, wird ein `return 0` in der EEPMain abgefangen und stattdessen `1` zurückgegeben. Dieser Eingriff wird mit einer Warnung im Ereignisfenster kommentiert.  
+  Eine kurze Erklärung dazu: Wird die `EEPMain` einmal mit `return 0` beendet, wird sie anschließend von EEP nicht mehr erneut aufgerufen. Das ist das gewollte Verhalten (wobei mir kein sinnvoller Anwendungsfall dafür einfällt). Es gibt aber auch eine ungewollte Konsequenz: Wenn du nun einen Kontaktpunkt-Dialog mit „komplexem“ Lua-Eintrag (der von BetterContacts behandelt werden muss) per Klick auf OK schließen willst, hängt sich EEP komplett auf, und alle ungespeicherten Änderungen sind verloren. Die Option `preventReturn0` versucht dies zu verhindern. Wenn du dir sicher bist, dass deine `EEPMain` niemals mit `return 0` beendet wird, kannst du dieses Sicherheitsfeature auf eigene Gefahr abschalten.
 
 **Achtung:** Die mit ⚠️ markierten Parameter `varname` und `replaceDots` können nicht nach Belieben geändert werden, sondern müssen zu den tatsächlichen Einträgen in den Kontaktpunkten auf der Anlage passen.
 
