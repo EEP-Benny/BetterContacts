@@ -26,6 +26,8 @@ Leider enthält das Standardskript ab EEP16 ein `return 0`. Falls noch nicht ges
     if (I>9) then return 0 end
 ```
 
+_Falls du das vergisst, erscheint eine Fehlermeldung im Ereignisfenster sowie 3D-Fenster und es wird ein Warnton abgespielt._
+
 #### 3. Aktivieren
 
 Schalte in den 3D-Modus, sodass Lua einmal ausgeführt wird.
