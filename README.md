@@ -56,7 +56,7 @@ Bitte beachte, dass das Eingabefeld maximal 63 Zeichen zulässt.
 Es ist möglich, einige Aspekte von BetterContacts zu konfigurieren. Dazu muss die `require`-Zeile folgendermaßen ergänzt werden:
 
 ```lua
-require("BetterContacts_BH2"){printErrors=true, chunkname="Kontaktpunkt-Eintrag"}
+require("BetterContacts_BH2"){printVersionInfo=true, printErrors=true}
 ```
 
 Dabei werden die folgenden Parameter unterstützt:
@@ -64,6 +64,10 @@ Dabei werden die folgenden Parameter unterstützt:
 #### `varname` ⚠️
 
 Ein beliebiger Variablenname als String (standardmäßig `"Zugname"`). Unter diesem Variablennamen wird der von EEP übergebene Name des Zuges bereitgestellt, der den Kontaktpunkt überfahren hat. Wenn du lieber einen anderen Variablennamen verwenden willst, kannst du das mit dieser Option ändern.
+
+#### `printVersionInfo`
+
+`true` oder `false` (Standardwert). Sobald diese Option auf `true` gesetzt wird, wird eine Meldung mit der aktuell verwendeten Version von BetterContacts ins Ereignisfenster geschrieben.
 
 #### `printErrors`
 
@@ -92,8 +96,8 @@ _Unwichtiger Hinweis:_ Bei der oben angegebenen `require`-Zeile handelt es sich 
 
 ```lua
 require("BetterContacts_BH2").setOptions({
+  printVersionInfo = true,
   printErrors = true,
-  chunkname = "Kontaktpunkt-Eintrag",
 })
 ```
 
