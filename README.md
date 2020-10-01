@@ -61,13 +61,30 @@ require("BetterContacts_BH2"){printErrors=true, chunkname="Kontaktpunkt-Eintrag"
 
 Dabei werden die folgenden Parameter unterstützt:
 
-- ⚠️ `varname`: Ein beliebiger Variablenname als String (standardmäßig `"Zugname"`). Unter diesem Variablennamen wird der von EEP übergebene Name des Zuges bereitgestellt, der den Kontaktpunkt überfahren hat. Wenn du lieber einen anderen Variablennamen verwenden willst, kannst du das mit dieser Option ändern.
-- `printErrors`: `true` oder `false` (Standardwert). Wenn `true`, wird bei Syntaxfehlern eine entsprechende Meldung im Ereignisfenster ausgegeben, die beim Fehlersuchen helfen kann (siehe [unten](#Fehlersuche)).
-- `chunkname`: Ein beliebiger String (standardmäßig `"KP-Eintrag"`). Dieser wird als _Chunkname_ an Lua übergeben und taucht in Fehlermeldungen auf. Die Funktionalität wird durch diesen Parameter nicht verändert.
-- ⚠️ `replaceDots`: `true` oder `false` (Standardwert). Dies ist für EEP 10 nötig, da bei dieser Version fälschlicherweise alle in das Eingabefeld eingegebenen Kommas in Punkte umgewandelt werden. Wenn `replaceDots` auf `true` gesetzt ist, werden alle Punkte wieder in Kommas zurückverwandelt. Somit ist es möglich, mehrere (durch Komma getrennte) Parameter an eine Funktion zu übergeben. Leider werden damit auch gewollte Punkte durch Kommas ersetzt, sodass eine Dezimalzahl (z.B. `10.2`) als zwei Parameter `10, 2` interpretiert wird. Ab EEP 11(?) ist die fälschliche Komma-durch-Punkt-Ersetzung behoben, sodass diese Option nicht mehr benötigt wird (sofern es in der Anlage nicht noch alte Kontaktpunkte mit falschen Punkten gibt).
-- `preventReturn0`: `true` (Standardwert) oder `false`. Wenn `true`, wird ein `return 0` in der EEPMain abgefangen und stattdessen `1` zurückgegeben. Dieser Eingriff wird mit einer Warnung im Ereignisfenster kommentiert.  
-  Eine kurze Erklärung dazu: Wird die `EEPMain` einmal mit `return 0` beendet, wird sie anschließend von EEP nicht mehr erneut aufgerufen. Das ist das gewollte Verhalten (wobei mir kein sinnvoller Anwendungsfall dafür einfällt). Es gibt aber auch eine ungewollte Konsequenz: Wenn du nun einen Kontaktpunkt-Dialog mit „komplexem“ Lua-Eintrag (der von BetterContacts behandelt werden muss) per Klick auf OK schließen willst, hängt sich EEP komplett auf, und alle ungespeicherten Änderungen sind verloren. Die Option `preventReturn0` versucht dies zu verhindern. Wenn du dir sicher bist, dass deine `EEPMain` niemals mit `return 0` beendet wird, kannst du dieses Sicherheitsfeature auf eigene Gefahr abschalten.
-- ⚠️👎 `deprecatedUseGlobal`: `true` oder `false` (Standardwert). Wenn `true`, wird der Zugname zusätzlich in einer globalen Variable namens `Zugname` bereitgestellt, die Option `varname` hat dann keinen Effekt mehr. Die Option `deprecatedUseGlobal` gibt es nur aus Kompatibilitätsgründen zu meiner bisherigen Codezeile. Ich rate dringend davon ab, sie zu verwenden (deshalb 👎).
+#### `varname` ⚠️
+
+Ein beliebiger Variablenname als String (standardmäßig `"Zugname"`). Unter diesem Variablennamen wird der von EEP übergebene Name des Zuges bereitgestellt, der den Kontaktpunkt überfahren hat. Wenn du lieber einen anderen Variablennamen verwenden willst, kannst du das mit dieser Option ändern.
+
+#### `printErrors`
+
+`true` oder `false` (Standardwert). Wenn `true`, wird bei Syntaxfehlern eine entsprechende Meldung im Ereignisfenster ausgegeben, die beim Fehlersuchen helfen kann (siehe [unten](#Fehlersuche)).
+
+#### `chunkname`
+
+Ein beliebiger String (standardmäßig `"KP-Eintrag"`). Dieser wird als _Chunkname_ an Lua übergeben und taucht in Fehlermeldungen auf. Die Funktionalität wird durch diesen Parameter nicht verändert.
+
+#### `replaceDots` ⚠️
+
+`true` oder `false` (Standardwert). Dies ist für EEP 10 nötig, da bei dieser Version fälschlicherweise alle in das Eingabefeld eingegebenen Kommas in Punkte umgewandelt werden. Wenn `replaceDots` auf `true` gesetzt ist, werden alle Punkte wieder in Kommas zurückverwandelt. Somit ist es möglich, mehrere (durch Komma getrennte) Parameter an eine Funktion zu übergeben. Leider werden damit auch gewollte Punkte durch Kommas ersetzt, sodass eine Dezimalzahl (z.B. `10.2`) als zwei Parameter `10, 2` interpretiert wird. Ab EEP 11(?) ist die fälschliche Komma-durch-Punkt-Ersetzung behoben, sodass diese Option nicht mehr benötigt wird (sofern es in der Anlage nicht noch alte Kontaktpunkte mit falschen Punkten gibt).
+
+#### `preventReturn0`
+
+`true` (Standardwert) oder `false`. Wenn `true`, wird ein `return 0` in der EEPMain abgefangen und stattdessen `1` zurückgegeben. Dieser Eingriff wird mit einer Warnung im Ereignisfenster kommentiert.  
+Eine kurze Erklärung dazu: Wird die `EEPMain` einmal mit `return 0` beendet, wird sie anschließend von EEP nicht mehr erneut aufgerufen. Das ist das gewollte Verhalten (wobei mir kein sinnvoller Anwendungsfall dafür einfällt). Es gibt aber auch eine ungewollte Konsequenz: Wenn du nun einen Kontaktpunkt-Dialog mit „komplexem“ Lua-Eintrag (der von BetterContacts behandelt werden muss) per Klick auf OK schließen willst, hängt sich EEP komplett auf, und alle ungespeicherten Änderungen sind verloren. Die Option `preventReturn0` versucht dies zu verhindern. Wenn du dir sicher bist, dass deine `EEPMain` niemals mit `return 0` beendet wird, kannst du dieses Sicherheitsfeature auf eigene Gefahr abschalten.
+
+#### `deprecatedUseGlobal` ⚠️👎
+
+`true` oder `false` (Standardwert). Wenn `true`, wird der Zugname zusätzlich in einer globalen Variable namens `Zugname` bereitgestellt, die Option `varname` hat dann keinen Effekt mehr. Die Option `deprecatedUseGlobal` gibt es nur aus Kompatibilitätsgründen zu meiner bisherigen Codezeile. Ich rate dringend davon ab, sie zu verwenden (deshalb 👎).
 
 **Achtung:** Die mit ⚠️ markierten Parameter `varname`, `replaceDots` und `deprecatedUseGlobal` können nicht nach Belieben geändert werden, sondern müssen zu den tatsächlichen Einträgen in den Kontaktpunkten auf der Anlage passen.
 
