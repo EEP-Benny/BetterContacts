@@ -1,8 +1,8 @@
 [Install_00]
-Name_GER	 = "BetterContacts_BH2 v1.0"
-Name_ENG	 = "BetterContacts_BH2 v1.0"
-Name_FRA	 = "BetterContacts_BH2 v1.0"
-Name_POL	 = "BetterContacts_BH2 v1.0"
+Name_GER	 = "BetterContacts_BH2 v1.1"
+Name_ENG	 = "BetterContacts_BH2 v1.1"
+Name_FRA	 = "BetterContacts_BH2 v1.1"
+Name_POL	 = "BetterContacts_BH2 v1.1"
 Desc_GER	 = "BetterContacts macht Kontaktpunkte besser:[e]In das Eingabefeld für Lua-Aufrufe können nun auch Funktionsparameter eingegeben werden.[e][e]Mehr Infos unter https://emaps-eep.de/lua/bettercontacts"
 Desc_ENG	 = "BetterContacts makes contact points better:[e]It is now possible to specify function parameters for Lua calls.[e][e]More information (in German) at https://emaps-eep.de/lua/bettercontacts"
 Desc_FRA	 = "BetterContacts améliore les points de contact:[e]Les paramètres de fonction peuvent maintenant être saisis dans le champ de saisie pour les appels Lua.[e][e]Plus d'informations (en allemand) sur https://emaps-eep.de/lua/bettercontacts"

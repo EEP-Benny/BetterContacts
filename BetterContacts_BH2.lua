@@ -1,5 +1,5 @@
 local betterContacts = {
-  _VERSION     = { 1, 0, 0 },
+  _VERSION     = { 1, 1, 0 },
   _DESCRIPTION = 'Funktionsaufrufe mit Parametern (und mehr) in Kontaktpunkten',
   _URL         = 'https://github.com/EEP-Benny/BetterContacts',
   _LICENSE     = "MIT",

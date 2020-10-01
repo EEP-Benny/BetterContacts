@@ -1,5 +1,5 @@
 local betterContacts = {
-  _VERSION     = { 1, 0, 0 },
+  _VERSION     = { 1, 1, 0 },
   _DESCRIPTION = 'Funktionsaufrufe mit Parametern (und mehr) in Kontaktpunkten',
   _URL         = 'https://github.com/EEP-Benny/BetterContacts',
   _LICENSE     = "MIT",
@@ -16,9 +16,11 @@ local function replaceDots(key)
 end
 
 local options = {
+  printVersionInfo = false,
   printErrors = false,
   replaceDots = false,
   varname = "Zugname",
+  varnameTrackID = "",
   chunkname = "KP-Eintrag",
   preventReturn0 = true,
   deprecatedUseGlobal = false,
@@ -26,6 +28,10 @@ local options = {
 betterContacts.getOptions = function() return options end
 betterContacts.setOptions = function(newOptions)
   if type(newOptions) == "table" then
+    -- if printVersionInfo changes from false to true, print the version info
+    if newOptions.printVersionInfo and not options.printVersionInfo then
+      print("BetterContacts_BH2 v".. table.concat(betterContacts._VERSION, ".").. " wurde eingebunden.")
+    end
     -- transfer new options to local option table
     for key, newValue in pairs(newOptions) do
       local oldType = type(options[key])
@@ -48,7 +54,11 @@ betterContacts.setOptions = function(newOptions)
     -- local function p is neccessary to prevent shadowing of variables z and s
     templateString = "local p=function() %s end;return function(z) local s=Zugname;Zugname=z;p();Zugname=s end;"
   else
-    templateString = "return function(" .. options.varname .. ") %s end"
+    local params = options.varname
+    if options.varnameTrackID ~= "" then 
+      params = params .. "," .. options.varnameTrackID
+    end
+    templateString = "return function(" .. params .. ") %s end"
   end
 end
 betterContacts.setOptions() -- initialize local variables from default options
