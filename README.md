@@ -65,6 +65,10 @@ Dabei werden die folgenden Parameter unterstützt:
 
 Ein beliebiger Variablenname als String (standardmäßig `"Zugname"`). Unter diesem Variablennamen wird der von EEP übergebene Name des Zuges bereitgestellt, der den Kontaktpunkt überfahren hat. Wenn du lieber einen anderen Variablennamen verwenden willst, kannst du das mit dieser Option ändern.
 
+#### `varnameTrackID` ⚠️
+
+Ein beliebiger Variablenname als String oder ein leerer String (`""`, Standardwert). Ab EEP16 mit Plugin 3 wird beim Überfahren eines Kontaktpunkts zusätzlich die ID des Gleises übergeben, auf dem der Kontaktpunkt liegt. Wenn du diese ID innerhalb des Kontaktpunkt-Eintrags verwenden willst, kannst du über diese Option einen Variablennamen dafür festlegen.
+
 #### `printVersionInfo`
 
 `true` oder `false` (Standardwert). Sobald diese Option auf `true` gesetzt wird, wird eine Meldung mit der aktuell verwendeten Version von BetterContacts ins Ereignisfenster geschrieben.
@@ -90,7 +94,7 @@ Eine kurze Erklärung dazu: Wird die `EEPMain` einmal mit `return 0` beendet, wi
 
 `true` oder `false` (Standardwert). Wenn `true`, wird der Zugname zusätzlich in einer globalen Variable namens `Zugname` bereitgestellt, die Option `varname` hat dann keinen Effekt mehr. Die Option `deprecatedUseGlobal` gibt es nur aus Kompatibilitätsgründen zu meiner bisherigen Codezeile. Ich rate dringend davon ab, sie zu verwenden (deshalb 👎).
 
-**Achtung:** Die mit ⚠️ markierten Parameter `varname`, `replaceDots` und `deprecatedUseGlobal` können nicht nach Belieben geändert werden, sondern müssen zu den tatsächlichen Einträgen in den Kontaktpunkten auf der Anlage passen.
+**Achtung:** Die mit ⚠️ markierten Parameter `varname`, `varnameTrackID`, `replaceDots` und `deprecatedUseGlobal` können nicht nach Belieben geändert werden, sondern müssen zu den tatsächlichen Einträgen in den Kontaktpunkten auf der Anlage passen.
 
 _Unwichtiger Hinweis:_ Bei der oben angegebenen `require`-Zeile handelt es sich um eine Kurzschreibweise, die dank verschiedener technischer Kniffe möglich ist. Die folgende Langversion (mit `.setOptions`, Klammern und Zeilenumbrüchen) macht genau das gleiche:
 
@@ -114,7 +118,7 @@ Wenn du jetzt auf OK klickst, kommt wieder die wenig hilfreiche Fehlermeldung vo
 `[string "Kontaktpunkt-Eintrag"]:1: ')' expected near 'end'`  
 Diese von Lua generierte Fehlermeldung ist zwar auch etwas kryptisch, enthält aber die wesentliche Info: Es fehlt eine schließende Klammer am Ende.
 
-Wenn du diese Hilfe zur Fehlersuche nicht mehr benötigst, kannst du die Option `printErrors` wieder deaktivieren (entweder gar nicht angeben oder explizit auf `false`).
+Wenn du diese Hilfe zur Fehlersuche nicht mehr benötigst, kannst du die Option `printErrors` wieder deaktivieren (entweder gar nicht angeben oder explizit auf `false` setzen).
 
 ### Umstieg vom Codeschnipsel zu BetterContacts
 

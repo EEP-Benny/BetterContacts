@@ -20,6 +20,7 @@ local options = {
   printErrors = false,
   replaceDots = false,
   varname = "Zugname",
+  varnameTrackID = "",
   chunkname = "KP-Eintrag",
   preventReturn0 = true,
   deprecatedUseGlobal = false,
@@ -53,7 +54,11 @@ betterContacts.setOptions = function(newOptions)
     -- local function p is neccessary to prevent shadowing of variables z and s
     templateString = "local p=function() %s end;return function(z) local s=Zugname;Zugname=z;p();Zugname=s end;"
   else
-    templateString = "return function(" .. options.varname .. ") %s end"
+    local params = options.varname
+    if options.varnameTrackID ~= "" then 
+      params = params .. "," .. options.varnameTrackID
+    end
+    templateString = "return function(" .. params .. ") %s end"
   end
 end
 betterContacts.setOptions() -- initialize local variables from default options
