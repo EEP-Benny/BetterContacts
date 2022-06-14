@@ -1,0 +1,6 @@
+# https://git-scm.com/docs/gitattributes
+
+# git shouldn't change line endings in EEP related files
+*.eep -text
+*.ini -text
+*.lua -text
